@@ -17,6 +17,7 @@ type CartContextType = {
     addToCart: (item: Omit<CartItem, 'quantity'>) => void;
     removeFromCart: (id: string) => void;
     updateQuantity: (id: string, quantity: number) => void;
+    updatePrice: (id: string, price: number) => void;
     clearCart: () => void;
     isCartOpen: boolean;
     setIsCartOpen: (isOpen: boolean) => void;
@@ -63,6 +64,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
         });
     };
 
+    // Update Item Price
+    const updatePrice = (id: string, price: number) => {
+        setItems((prevItems) =>
+            prevItems.map((item) =>
+                item.id === id ? { ...item, price: Math.max(0, price) } : item
+            )
+        );
+    };
+
     // Clear Cart
     const clearCart = () => {
         setItems([]);
@@ -79,6 +89,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
                 addToCart,
                 removeFromCart,
                 updateQuantity,
+                updatePrice,
                 clearCart,
                 isCartOpen,
                 setIsCartOpen,

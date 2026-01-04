@@ -5,18 +5,46 @@ import { useRouter } from 'next/navigation';
 import { useCart } from '../context/CartContext';
 
 export default function CartSidebar() {
-    const { items, removeFromCart, updateQuantity, clearCart, isCartOpen, setIsCartOpen, cartTotal } = useCart();
+    const { items, removeFromCart, updateQuantity, updatePrice, clearCart, isCartOpen, setIsCartOpen, cartTotal } = useCart();
     const router = useRouter();
     const [isCheckingOut, setIsCheckingOut] = React.useState(false);
+    const [editingPriceId, setEditingPriceId] = React.useState<string | null>(null);
+    const [tempPrice, setTempPrice] = React.useState<string>('');
 
     // Reset checkout state when cart opens/closes
     React.useEffect(() => {
         if (isCartOpen) {
             setIsCheckingOut(false);
+            setEditingPriceId(null);
         }
     }, [isCartOpen]);
 
     if (!isCartOpen) return null;
+
+    const handlePriceClick = (item: { id: string; price: number }) => {
+        setEditingPriceId(item.id);
+        setTempPrice(item.price.toString());
+    };
+
+    const handlePriceChange = (value: string) => {
+        // Only allow numbers
+        const numericValue = value.replace(/[^0-9]/g, '');
+        setTempPrice(numericValue);
+    };
+
+    const handlePriceBlur = (itemId: string) => {
+        const newPrice = parseInt(tempPrice) || 0;
+        updatePrice(itemId, newPrice);
+        setEditingPriceId(null);
+    };
+
+    const handlePriceKeyDown = (e: React.KeyboardEvent, itemId: string) => {
+        if (e.key === 'Enter') {
+            handlePriceBlur(itemId);
+        } else if (e.key === 'Escape') {
+            setEditingPriceId(null);
+        }
+    };
 
     const handleCheckout = async () => {
         if (isCheckingOut) return; // Prevent double-click
@@ -92,9 +120,28 @@ export default function CartSidebar() {
                                         <h3 className="text-sm font-bold text-[#111811] dark:text-white line-clamp-2 leading-tight">
                                             {item.name}
                                         </h3>
-                                        <p className="text-sm font-bold text-primary mt-1">
-                                            Rp {item.price.toLocaleString('id-ID')}
-                                        </p>
+                                        {editingPriceId === item.id ? (
+                                            <div className="flex items-center gap-1 mt-1">
+                                                <span className="text-sm text-primary font-bold">Rp</span>
+                                                <input
+                                                    type="text"
+                                                    value={tempPrice}
+                                                    onChange={(e) => handlePriceChange(e.target.value)}
+                                                    onBlur={() => handlePriceBlur(item.id)}
+                                                    onKeyDown={(e) => handlePriceKeyDown(e, item.id)}
+                                                    className="w-24 px-2 py-1 text-sm font-bold text-primary border border-primary rounded focus:outline-none focus:ring-2 focus:ring-primary"
+                                                    autoFocus
+                                                />
+                                            </div>
+                                        ) : (
+                                            <p
+                                                onClick={() => handlePriceClick(item)}
+                                                className="text-sm font-bold text-primary mt-1 cursor-pointer hover:underline"
+                                                title="Klik untuk edit harga"
+                                            >
+                                                Rp {item.price.toLocaleString('id-ID')}
+                                            </p>
+                                        )}
                                     </div>
 
                                     {/* Controls */}
