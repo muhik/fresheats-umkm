@@ -11,6 +11,9 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "FreshEats - Menu & Offers",
   description: "FreshEats Landing Page",
+  icons: {
+    icon: '/favicon.png',
+  },
 };
 
 import { CartProvider } from "./context/CartContext";
