@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { useCart } from './context/CartContext';
 
 export default function Home() {
@@ -39,6 +40,14 @@ export default function Home() {
               <input className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-base text-[#111811] dark:text-white border-none bg-[#f0f5f0] dark:bg-[#1a2e1a] focus:ring-0 placeholder:text-[#608a60] dark:placeholder:text-gray-500 px-4 rounded-l-none border-l-0 pl-2 font-normal leading-normal" placeholder="Search menu..." defaultValue="" />
             </div>
           </label>
+          <Link
+            href="/transactions"
+            className="flex items-center gap-2 cursor-pointer justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#f0f5f0] dark:bg-[#1a2e1a] hover:bg-gray-200 dark:hover:bg-[#243524] transition-colors text-[#111811] dark:text-white text-sm font-bold leading-normal"
+            title="Lihat Riwayat Penjualan"
+          >
+            <span className="material-symbols-outlined text-[20px]">receipt_long</span>
+            <span className="truncate hidden sm:inline">Penjualan</span>
+          </Link>
           <button
             onClick={() => setIsCartOpen(true)}
             className="flex items-center gap-2 cursor-pointer justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary hover:bg-green-400 transition-colors text-[#111811] text-sm font-bold leading-normal tracking-[0.015em]"
