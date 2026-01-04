@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: "FreshEats - Menu & Offers",
   description: "FreshEats Landing Page",
   icons: {
-    icon: '/favicon.png',
+    icon: '/favicon.svg',
   },
 };
 
