@@ -155,7 +155,17 @@ export default function Home() {
                       <span className="text-3xl font-bold text-primary">Rp 35.000</span>
                       <span className="text-gray-400 text-lg line-through">Rp 40.000</span>
                     </div>
-                    <button className="mt-4 w-fit bg-white text-[#111811] px-5 py-2.5 rounded-lg text-sm font-bold hover:bg-gray-200 transition-colors">
+                    <button
+                      onClick={() => {
+                        addToCart({
+                          id: 'paket-segar-mantap',
+                          name: 'Paket Segar Mantap',
+                          price: 35000,
+                          image: '/es-oyen.png'
+                        });
+                      }}
+                      className="mt-4 w-fit bg-white text-[#111811] px-5 py-2.5 rounded-lg text-sm font-bold hover:bg-gray-200 transition-colors"
+                    >
                       Pesan Sekarang
                     </button>
                   </div>
@@ -171,7 +181,17 @@ export default function Home() {
                       <span className="text-3xl font-bold text-white">Rp 35.000</span>
                       <span className="text-white/70 text-lg line-through">Rp 40.000</span>
                     </div>
-                    <button className="mt-4 w-fit bg-[#111811] text-white px-5 py-2.5 rounded-lg text-sm font-bold hover:bg-black/80 transition-colors">
+                    <button
+                      onClick={() => {
+                        addToCart({
+                          id: 'pandan-party-2x',
+                          name: 'Pandan Party 2x',
+                          price: 35000,
+                          image: '/buko-pandan.png'
+                        });
+                      }}
+                      className="mt-4 w-fit bg-[#111811] text-white px-5 py-2.5 rounded-lg text-sm font-bold hover:bg-black/80 transition-colors"
+                    >
                       Pesan Sekarang
                     </button>
                   </div>
