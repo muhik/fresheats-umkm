@@ -10,12 +10,12 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  
+
   /* Custom colors from HTML */
   --color-primary: #25f425;
   --color-background-light: #f5f8f5;
   --color-background-dark: #102210;
-  
+
   /* Custom font */
   --font-display: var(--font-plus-jakarta-sans);
 }
@@ -31,4 +31,58 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Mobile Responsive Fixes */
+@media (max-width: 768px) {
+
+  /* Prevent horizontal overflow */
+  html,
+  body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  /* Fix text overflow */
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  span {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  /* Smaller headings on mobile */
+  h1 {
+    font-size: 1.75rem !important;
+  }
+
+  h2 {
+    font-size: 1.5rem !important;
+  }
+
+  /* Fix container padding */
+  .container,
+  [class*="container"] {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Fix grid for mobile */
+  .grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Smaller images on mobile */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Fix flex items */
+  .flex {
+    flex-wrap: wrap;
+  }
 }
