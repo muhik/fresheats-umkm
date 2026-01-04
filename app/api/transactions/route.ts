@@ -55,3 +55,29 @@ export async function GET(request: Request) {
         return NextResponse.json({ error: 'Failed to fetch transactions' }, { status: 500 });
     }
 }
+
+export async function DELETE(request: Request) {
+    try {
+        const { searchParams } = new URL(request.url);
+        const id = searchParams.get('id');
+
+        if (!id) {
+            return NextResponse.json({ error: 'Transaction ID required' }, { status: 400 });
+        }
+
+        // Delete transaction items first (cascade)
+        await prisma.transactionItem.deleteMany({
+            where: { transactionId: id }
+        });
+
+        // Delete the transaction
+        await prisma.transaction.delete({
+            where: { id }
+        });
+
+        return NextResponse.json({ success: true, message: 'Transaction deleted' });
+    } catch (error) {
+        console.error('Delete transaction error:', error);
+        return NextResponse.json({ error: 'Failed to delete transaction' }, { status: 500 });
+    }
+}

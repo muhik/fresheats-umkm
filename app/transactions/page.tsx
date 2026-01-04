@@ -21,11 +21,13 @@ type Transaction = {
 export default function TransactionsPage() {
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [loading, setLoading] = useState(true);
+    const [deletingId, setDeletingId] = useState<string | null>(null);
     const [dateFrom, setDateFrom] = useState('');
     const [dateTo, setDateTo] = useState('');
     const [totalSales, setTotalSales] = useState(0);
     const [totalTransactions, setTotalTransactions] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
+    const [refreshTrigger, setRefreshTrigger] = useState(0);
     const itemsPerPage = 5;
 
     useEffect(() => {
@@ -54,7 +56,29 @@ export default function TransactionsPage() {
                 console.error(err);
                 setLoading(false);
             });
-    }, [dateFrom, dateTo, currentPage]);
+    }, [dateFrom, dateTo, currentPage, refreshTrigger]);
+
+    const handleDelete = async (id: string) => {
+        if (!confirm('Yakin ingin menghapus transaksi ini?')) return;
+
+        setDeletingId(id);
+        try {
+            const response = await fetch(`/api/transactions?id=${id}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                setRefreshTrigger(prev => prev + 1);
+            } else {
+                alert('Gagal menghapus transaksi');
+            }
+        } catch (error) {
+            console.error('Delete error:', error);
+            alert('Terjadi kesalahan');
+        } finally {
+            setDeletingId(null);
+        }
+    };
 
     const totalPages = Math.ceil(totalTransactions / itemsPerPage);
 
@@ -183,9 +207,23 @@ export default function TransactionsPage() {
                                             <p className="text-xs text-gray-400">{formatDate(trx.date)}</p>
                                         </div>
                                     </div>
-                                    <div className="text-right">
-                                        <p className="text-xs text-gray-400">Total</p>
-                                        <p className="text-lg font-black text-primary">Rp {trx.total.toLocaleString('id-ID')}</p>
+                                    <div className="flex items-center gap-3">
+                                        <div className="text-right">
+                                            <p className="text-xs text-gray-400">Total</p>
+                                            <p className="text-lg font-black text-primary">Rp {trx.total.toLocaleString('id-ID')}</p>
+                                        </div>
+                                        <button
+                                            onClick={() => handleDelete(trx.id)}
+                                            disabled={deletingId === trx.id}
+                                            className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors disabled:opacity-50"
+                                            title="Hapus transaksi"
+                                        >
+                                            {deletingId === trx.id ? (
+                                                <span className="w-5 h-5 border-2 border-red-500 border-t-transparent rounded-full animate-spin inline-block"></span>
+                                            ) : (
+                                                <span className="material-symbols-outlined">delete</span>
+                                            )}
+                                        </button>
                                     </div>
                                 </div>
 
@@ -232,8 +270,8 @@ export default function TransactionsPage() {
                                         key={page}
                                         onClick={() => setCurrentPage(page)}
                                         className={`w-10 h-10 rounded-lg text-sm font-bold transition-colors ${currentPage === page
-                                                ? 'bg-primary text-[#111811]'
-                                                : 'bg-white dark:bg-[#1a2e1a] border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-[#111d11]'
+                                            ? 'bg-primary text-[#111811]'
+                                            : 'bg-white dark:bg-[#1a2e1a] border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-[#111d11]'
                                             }`}
                                     >
                                         {page}
