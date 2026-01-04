@@ -77,10 +77,25 @@ export default function Home() {
                     </p>
                   </div>
                   <div className="flex gap-4">
-                    <button className="flex min-w-[140px] cursor-pointer items-center justify-center rounded-lg h-12 px-6 bg-primary hover:bg-green-400 transition-colors text-[#111811] text-base font-bold">
+                    <button
+                      onClick={() => {
+                        addToCart({
+                          id: 'buko-pandan-hero',
+                          name: 'Creamy Buko Pandan',
+                          price: 20000,
+                          image: '/buko-pandan.png'
+                        });
+                      }}
+                      className="flex min-w-[140px] cursor-pointer items-center justify-center rounded-lg h-12 px-6 bg-primary hover:bg-green-400 transition-colors text-[#111811] text-base font-bold"
+                    >
                       Order Now
                     </button>
-                    <button className="flex min-w-[140px] cursor-pointer items-center justify-center rounded-lg h-12 px-6 bg-white dark:bg-[#1a2e1a] border border-[#e5e7eb] dark:border-[#2a2a2a] hover:bg-gray-50 dark:hover:bg-[#253825] transition-colors text-[#111811] dark:text-white text-base font-bold">
+                    <button
+                      onClick={() => {
+                        document.getElementById('menu-section')?.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                      className="flex min-w-[140px] cursor-pointer items-center justify-center rounded-lg h-12 px-6 bg-white dark:bg-[#1a2e1a] border border-[#e5e7eb] dark:border-[#2a2a2a] hover:bg-gray-50 dark:hover:bg-[#253825] transition-colors text-[#111811] dark:text-white text-base font-bold"
+                    >
                       View Details
                     </button>
                   </div>
@@ -119,7 +134,7 @@ export default function Home() {
               </div>
             </div>
             {/* Bundle Offers Section */}
-            <div className="py-8">
+            <div id="menu-section" className="py-8">
               <div className="flex items-center justify-between px-2 pb-4 pt-2">
                 <h2 className="text-[22px] font-bold leading-tight tracking-[-0.015em] flex items-center gap-2">
                   <span className="material-symbols-outlined text-primary">local_fire_department</span>
